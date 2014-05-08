@@ -107,14 +107,15 @@ var hasMushroomsOrNuts = function (x){
     var ingredientCount = { "{ingredient name}": 0 };
 
     /* chain() together map(), flatten() and reduce() */
-    _.chain(products)
-    .map(function(name){return name.ingredients();})
-    .flatten()
-    .reduce(function(counts, ingredient){
-      counts[ingredient] = (counts[ingredient] || 0) + 1;
-      return counts;
-    }, {})
-    .value();
+    
+    _.chain(products).map(function(product){
+      return product.ingredients;
+    }).flatten().each(function(ingredient){
+      if (!ingredientCount[ingredient]){
+        ingredientCount[ingredient] = 0;
+      }
+      ingredientCount[ingredient] += 1;
+    });
 
     expect(ingredientCount['mushrooms']).toBe(2);
   });
